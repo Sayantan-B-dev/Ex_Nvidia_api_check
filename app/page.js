@@ -17,6 +17,7 @@ const defaults = {
 
 export default function Page(){
   const [profile, setProfile] = useState(defaults);
+  const [loaded, setLoaded] = useState(false);
   const [response, setResponse] = useState('— No request sent yet —');
   const [meta, setMeta] = useState('');
   const [chatInput, setChatInput] = useState('');
@@ -44,11 +45,13 @@ export default function Page(){
         setProfile(data);
       }
     }catch{}
+    setLoaded(true);
   },[]);
 
   useEffect(()=>{
+    if(!loaded) return;
     localStorage.setItem(STORAGE_KEY, JSON.stringify(profile));
-  },[profile]);
+  },[profile, loaded]);
 
   const update = (k,v)=> setProfile(p=>({...p,[k]:v}));
   const updateParam = (k,v)=> setProfile(p=>({...p,params:{...p.params,[k]:v}}));
