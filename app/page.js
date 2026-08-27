@@ -190,10 +190,10 @@ export default function Page(){
           <div style={{display:'grid',gridTemplateColumns:'1fr 1fr',gap:'16px',marginBottom:'16px'}}>
             <div style={{border:'2px solid var(--border)',borderRadius:'8px',padding:'12px',background:'rgba(30,30,38,0.4)'}}>
               <h3 style={{margin:'0 0 12px',fontWeight:800}}>API Info</h3>
-              <div className="field"><label>Profile Name</label><input value={profile.name} onChange={e=>update('name',e.target.value)} /></div>
-              <div className="field"><label>Base URL</label><input value={profile.baseUrl} onChange={e=>update('baseUrl',e.target.value)} /></div>
-              <div className="field"><label>API Key</label><input type="password" value={profile.apiKey} onChange={e=>update('apiKey',e.target.value)} placeholder="nvapi-..." /></div>
-              <div className="field"><label>Model</label><input value={profile.model} onChange={e=>update('model',e.target.value)} /></div>
+              <div className="field"><label>Profile Name</label><input autoComplete="off" value={profile.name} onChange={e=>update('name',e.target.value)} /></div>
+              <div className="field"><label>Base URL</label><input autoComplete="off" value={profile.baseUrl} onChange={e=>update('baseUrl',e.target.value)} /></div>
+              <div className="field"><label>API Key</label><input autoComplete="new-password" type="password" value={profile.apiKey} onChange={e=>update('apiKey',e.target.value)} placeholder="nvapi-..." /></div>
+              <div className="field"><label>Model</label><input autoComplete="off" value={profile.model} onChange={e=>update('model',e.target.value)} /></div>
               <div style={{marginTop:'12px',display:'flex',gap:'8px'}}>
                 <button className="btn primary" onClick={saveProfile}>Save Profile</button>
                 <button className="btn" onClick={()=>setModal({type:'confirm', message:'Delete current profile "'+profile.name+'" ?', onConfirm:()=>{deleteProfile(activeId); setModal(null);}})}>Delete Profile</button>
@@ -201,9 +201,9 @@ export default function Page(){
             </div>
             <div style={{border:'2px solid var(--border)',borderRadius:'8px',padding:'12px',background:'rgba(30,30,38,0.4)'}}>
               <h3 style={{margin:'0 0 12px',fontWeight:800}}>Parameters</h3>
-              <div className="field"><label>temperature</label><input type="number" step="0.01" value={profile.params.temperature} onChange={e=>updateParam('temperature',parseFloat(e.target.value))}/></div>
-              <div className="field"><label>top_p</label><input type="number" step="0.01" value={profile.params.top_p} onChange={e=>updateParam('top_p',parseFloat(e.target.value))}/></div>
-              <div className="field"><label>max_tokens</label><input type="number" value={profile.params.max_tokens} onChange={e=>updateParam('max_tokens',parseInt(e.target.value))}/></div>
+              <div className="field"><label>temperature</label><input autoComplete="off" type="number" step="0.01" value={profile.params.temperature} onChange={e=>updateParam('temperature',parseFloat(e.target.value))}/></div>
+              <div className="field"><label>top_p</label><input autoComplete="off" type="number" step="0.01" value={profile.params.top_p} onChange={e=>updateParam('top_p',parseFloat(e.target.value))}/></div>
+              <div className="field"><label>max_tokens</label><input autoComplete="off" type="number" value={profile.params.max_tokens} onChange={e=>updateParam('max_tokens',parseInt(e.target.value))}/></div>
               <label style={{display:'flex',alignItems:'center',gap:8,marginTop:12}}><input type="checkbox" checked={profile.params.stream} onChange={e=>updateParam('stream',e.target.checked)} /> stream</label>
             </div>
           </div>
@@ -241,7 +241,7 @@ export default function Page(){
               )}
             </div>
             <div style={{display:'flex',gap:'8px',marginTop:'10px'}}>
-              <input disabled={isSending} value={chatInput} onChange={e=>setChatInput(e.target.value)} onKeyDown={e=>{if(e.key==='Enter' && !e.shiftKey && !isSending){e.preventDefault();sendMessage();}}} placeholder={isSending?'Sending...':'Type a message...'} style={{flex:1,border:'2px solid var(--border)',background:'rgba(30,30,38,0.6)',color:'var(--fg)',padding:'8px 12px',borderRadius:'12px',fontSize:'clamp(11px,0.8vw+3px,13px)',opacity:isSending?0.6:1}}/>
+              <input autoComplete="off" disabled={isSending} value={chatInput} onChange={e=>setChatInput(e.target.value)} onKeyDown={e=>{if(e.key==='Enter' && !e.shiftKey && !isSending){e.preventDefault();sendMessage();}}} placeholder={isSending?'Sending...':'Type a message...'} style={{flex:1,border:'2px solid var(--border)',background:'rgba(30,30,38,0.6)',color:'var(--fg)',padding:'8px 12px',borderRadius:'12px',fontSize:'clamp(11px,0.8vw+3px,13px)',opacity:isSending?0.6:1}}/>
               <button className="btn primary" onClick={sendMessage} disabled={isSending}>{isSending?'Sending...':'Send'}</button>
             </div>
           </div>
