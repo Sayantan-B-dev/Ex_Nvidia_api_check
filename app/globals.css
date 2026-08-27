@@ -77,9 +77,9 @@ body{
   height:90vh;
   background:var(--card);
   border:1px solid var(--border);
-  padding:0;
+  padding:24px;
   border-radius:16px;
-  overflow:hidden;
+  overflow:auto;
   position:relative;
   z-index:20;
   box-shadow:0 10px 30px rgba(15,23,42,0.08);
