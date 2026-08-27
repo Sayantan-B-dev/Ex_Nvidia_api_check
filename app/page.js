@@ -217,8 +217,8 @@ export default function Page(){
               </div>
               <div className="chat-messages">
               {profile.messages.map((m,i)=>(
-                <div key={i} style={{marginBottom:'8px',textAlign:m.role==='user'?'right':'left'}}>
-                  <div style={{display:'inline-block',maxWidth:'80%',padding:'12px 16px',borderRadius:'12px',background:m.role==='user'?'#e0f2fe':'#f8fafc',border:'1px solid var(--border)',fontSize:'14px',textAlign:'left',wordBreak:'break-word'}}>
+                <div key={i} style={{marginBottom:'18px',display:'flex',justifyContent:m.role==='user'?'flex-end':'flex-start'}}>
+                  <div style={{maxWidth:'720px',padding:'14px 16px',borderRadius:'12px',background:m.role==='user'?'#e8f0fe':'#ffffff',border:'1px solid var(--border)',fontSize:'14px',textAlign:'left',wordBreak:'break-word',boxShadow:'0 1px 0 rgba(0,0,0,.02)'}}>
                     {m.role==='assistant' ? (
                       <div className="chat-markdown">
                         <ReactMarkdown remarkPlugins={[remarkGfm]} rehypePlugins={[rehypeSanitize]}>
@@ -232,16 +232,18 @@ export default function Page(){
                 </div>
               ))}
               {isSending && (
-                <div style={{marginBottom:'8px',textAlign:'left'}}>
-                  <div style={{display:'inline-block',maxWidth:'80%',padding:'12px 16px',borderRadius:'12px',background:'#f8fafc',border:'1px solid var(--border)',fontSize:'14px'}}>
+                <div style={{marginBottom:'18px',display:'flex',justifyContent:'flex-start'}}>
+                  <div style={{maxWidth:'720px',padding:'14px 16px',borderRadius:'12px',background:'#ffffff',border:'1px solid var(--border)',fontSize:'14px',boxShadow:'0 1px 0 rgba(0,0,0,.02)'}}>
                     <span className="dots"><span></span><span></span><span></span></span>
                   </div>
                 </div>
               )}
             </div>
-            <div style={{display:'flex',gap:'8px',marginTop:'10px'}}>
-              <input autoComplete="off" disabled={isSending} value={chatInput} onChange={e=>setChatInput(e.target.value)} onKeyDown={e=>{if(e.key==='Enter' && !e.shiftKey && !isSending){e.preventDefault();sendMessage();}}} placeholder={isSending?'Sending...':'Type a message...'} style={{flex:1,border:'1px solid var(--border)',background:'#fff',color:'var(--fg)',padding:'10px 14px',borderRadius:'8px',fontSize:'14px',opacity:isSending?0.6:1}}/>
-              <button className="btn primary" onClick={sendMessage} disabled={isSending}>{isSending?'Sending...':'Send'}</button>
+            <div className="chat-input-wrap">
+              <div style={{display:'flex',gap:'8px',maxWidth:'900px',margin:'0 auto'}}>
+                <input autoComplete="off" disabled={isSending} value={chatInput} onChange={e=>setChatInput(e.target.value)} onKeyDown={e=>{if(e.key==='Enter' && !e.shiftKey && !isSending){e.preventDefault();sendMessage();}}} placeholder={isSending?'Sending...':'Type a message...'} style={{flex:1,border:'1px solid var(--border)',background:'#fff',color:'var(--fg)',padding:'10px 14px',borderRadius:'8px',fontSize:'14px',opacity:isSending?0.6:1}}/>
+                <button className="btn primary" onClick={sendMessage} disabled={isSending}>{isSending?'Sending...':'Send'}</button>
+              </div>
             </div>
           </div>
         </div>
