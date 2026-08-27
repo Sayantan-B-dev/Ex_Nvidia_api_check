@@ -158,6 +158,9 @@ export default function Page(){
                 <div className="field small"><label>Base URL</label><input autoComplete="off" value={profile.baseUrl} onChange={e=>update('baseUrl',e.target.value)} /></div>
                 <div className="field small"><label>API Key</label><input autoComplete="new-password" type="password" value={profile.apiKey} onChange={e=>update('apiKey',e.target.value)} placeholder="nvapi-..." /></div>
                 <div className="field small"><label>Model</label><input autoComplete="off" value={profile.model} onChange={e=>update('model',e.target.value)} /></div>
+                <div style={{marginTop:'12px',display:'flex',gap:'8px'}}>
+                  <button className="btn small" style={{background:'#fee2e2',color:'#991b1b',border:'1px solid #fecaca'}} onClick={()=>setModal({type:'confirm',message:'Clear API key and chat history?',onConfirm:()=>{setProfile(p=>({...defaults, name:p.name, baseUrl:p.baseUrl, model:p.model})); setModal(null);}})}>Clear API & Chat</button>
+                </div>
               </div>
               <div style={{marginTop:'16px',padding:'12px',border:'1px solid #fca5a5',borderRadius:'12px',background:'#fff7f7'}}>
                 <h4 style={{margin:'0 0 8px',fontSize:'13px',fontWeight:800,color:'#b91c1c'}}>⚠️ Disclaimer</h4>
