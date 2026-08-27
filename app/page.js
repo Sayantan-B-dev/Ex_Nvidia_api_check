@@ -225,10 +225,10 @@ export default function Page(){
               <h3 style={{margin:0,fontWeight:800}}>Chat</h3>
               <button className="btn small" onClick={()=>setChatExpanded(v=>!v)}>{chatExpanded?'Collapse':'Expand'}</button>
             </div>
-            <div style={{border:'2px solid var(--border)',borderRadius:'12px',padding:'10px',background:'rgba(20,20,28,0.5)',maxHeight: chatExpanded?'600px':'320px',height: chatExpanded?'600px':'auto',overflow:'auto',marginBottom:'10px'}}>
+            <div style={{border:'1px solid var(--border)',borderRadius:'12px',padding:'12px',background:'#fff',maxHeight: chatExpanded?'600px':'320px',height: chatExpanded?'600px':'auto',overflow:'auto',marginBottom:'12px'}}>
               {profile.messages.map((m,i)=>(
                 <div key={i} style={{marginBottom:'8px',textAlign:m.role==='user'?'right':'left'}}>
-                  <div style={{display:'inline-block',maxWidth:'80%',padding:'8px 12px',borderRadius:'12px',background:m.role==='user'?'rgba(60,100,180,0.35)':'rgba(80,140,90,0.35)',border:'1px solid var(--border)',fontSize:'clamp(11px,0.8vw+3px,13px)',textAlign:'left',wordBreak:'break-word'}}>
+                  <div style={{display:'inline-block',maxWidth:'80%',padding:'12px 16px',borderRadius:'12px',background:m.role==='user'?'#e0f2fe':'#f8fafc',border:'1px solid var(--border)',fontSize:'14px',textAlign:'left',wordBreak:'break-word'}}>
                     {m.role==='assistant' ? (
                       <div className="chat-markdown">
                         <ReactMarkdown remarkPlugins={[remarkGfm]} rehypePlugins={[rehypeSanitize]}>
@@ -243,22 +243,22 @@ export default function Page(){
               ))}
               {isSending && (
                 <div style={{marginBottom:'8px',textAlign:'left'}}>
-                  <div style={{display:'inline-block',maxWidth:'80%',padding:'8px 12px',borderRadius:'12px',background:'rgba(80,140,90,0.35)',border:'1px solid var(--border)',fontSize:'clamp(11px,0.8vw+3px,13px)'}}>
+                  <div style={{display:'inline-block',maxWidth:'80%',padding:'12px 16px',borderRadius:'12px',background:'#f8fafc',border:'1px solid var(--border)',fontSize:'14px'}}>
                     <span className="dots"><span></span><span></span><span></span></span>
                   </div>
                 </div>
               )}
             </div>
             <div style={{display:'flex',gap:'8px',marginTop:'10px'}}>
-              <input autoComplete="off" disabled={isSending} value={chatInput} onChange={e=>setChatInput(e.target.value)} onKeyDown={e=>{if(e.key==='Enter' && !e.shiftKey && !isSending){e.preventDefault();sendMessage();}}} placeholder={isSending?'Sending...':'Type a message...'} style={{flex:1,border:'2px solid var(--border)',background:'rgba(30,30,38,0.6)',color:'var(--fg)',padding:'8px 12px',borderRadius:'12px',fontSize:'clamp(11px,0.8vw+3px,13px)',opacity:isSending?0.6:1}}/>
+              <input autoComplete="off" disabled={isSending} value={chatInput} onChange={e=>setChatInput(e.target.value)} onKeyDown={e=>{if(e.key==='Enter' && !e.shiftKey && !isSending){e.preventDefault();sendMessage();}}} placeholder={isSending?'Sending...':'Type a message...'} style={{flex:1,border:'1px solid var(--border)',background:'#fff',color:'var(--fg)',padding:'10px 14px',borderRadius:'8px',fontSize:'14px',opacity:isSending?0.6:1}}/>
               <button className="btn primary" onClick={sendMessage} disabled={isSending}>{isSending?'Sending...':'Send'}</button>
             </div>
           </div>
         </div>
       </div>
       {modal && (
-        <div style={{position:'fixed',inset:0,background:'rgba(0,0,0,0.6)',display:'grid',placeItems:'center',zIndex:9999}}>
-          <div style={{background:'rgba(18,18,24,0.9)',border:'2px solid var(--border)',borderRadius:'8px',padding:'16px',width:'min(90vw,420px)',color:'var(--fg)'}}>
+        <div style={{position:'fixed',inset:0,background:'rgba(15,23,42,0.5)',display:'grid',placeItems:'center',zIndex:9999}}>
+          <div style={{background:'#fff',border:'1px solid var(--border)',borderRadius:'12px',padding:'20px',width:'min(90vw,420px)',color:'var(--fg)',boxShadow:'0 10px 30px rgba(15,23,42,0.2)'}}>
             <h3 style={{margin:'0 0 8px',fontWeight:800}}>{modal.type==='confirm'?'Confirm':'Alert'}</h3>
             <p style={{margin:'0 0 16px'}}>{modal.message}</p>
             <div style={{display:'flex',gap:'8px',justifyContent:'flex-end'}}>
