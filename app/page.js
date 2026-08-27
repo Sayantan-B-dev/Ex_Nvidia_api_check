@@ -15,7 +15,7 @@ const defaults = {
   params: { temperature: 1, top_p: 0.95, max_tokens: 8192, stream: false }
 };
 
-function uid(){ return Math.random().toString(36).slice(2,10); }
+function uid(){ if (typeof crypto !== 'undefined' && crypto.randomUUID) return crypto.randomUUID(); return Math.random().toString(36).slice(2,10)+Date.now().toString(36); }
 
 export default function Page(){
   const [profiles, setProfiles] = useState([]);
@@ -32,7 +32,9 @@ export default function Page(){
     try{
       const raw = localStorage.getItem(STORAGE_KEY);
       const data = raw?JSON.parse(raw):[];
-      const list = data.length?data:[{...defaults,id:uid()}];
+      const seen = new Set();
+      const deduped = data.filter(p => { if(!p.id || seen.has(p.id)) return false; seen.add(p.id); return true; });
+      const list = deduped.length?deduped:[{...defaults,id:uid()}];
       setProfiles(list);
       setActiveId(list[0].id);
       setProfile(list[0]);
@@ -75,10 +77,14 @@ export default function Page(){
   };
 
   const newProfile = ()=>{
-    const p={...defaults, id:uid(), name:'New '+new Date().toLocaleTimeString()};
-    setProfiles(prev=>[p,...prev]);
-    setActiveId(p.id);
-    setProfile(p);
+    let id = uid();
+    setProfiles(prev=>{
+      while(prev.some(p=>p.id===id)) id = uid();
+      const p={...defaults, id, name:'New '+new Date().toLocaleTimeString()};
+      setActiveId(p.id);
+      setProfile(p);
+      return [p,...prev];
+    });
   };
 
   const deleteProfile = (id)=>{
