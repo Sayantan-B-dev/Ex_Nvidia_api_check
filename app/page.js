@@ -5,7 +5,7 @@ import ReactMarkdown from 'react-markdown';
 import remarkGfm from 'remark-gfm';
 import rehypeSanitize from 'rehype-sanitize';
 
-const STORAGE_KEY = 'nvidia_profiles_next';
+const STORAGE_KEY = 'nvidia_profile_next';
 const defaults = {
   name: 'Untitled',
   baseUrl: 'https://integrate.api.nvidia.com/v1',
@@ -15,11 +15,7 @@ const defaults = {
   params: { temperature: 1, top_p: 0.95, max_tokens: 8192, stream: false }
 };
 
-function uid(){ if (typeof crypto !== 'undefined' && crypto.randomUUID) return crypto.randomUUID(); return Math.random().toString(36).slice(2,10)+Date.now().toString(36); }
-
 export default function Page(){
-  const [profiles, setProfiles] = useState([]);
-  const [activeId, setActiveId] = useState(null);
   const [profile, setProfile] = useState(defaults);
   const [response, setResponse] = useState('— No request sent yet —');
   const [meta, setMeta] = useState('');
@@ -31,82 +27,16 @@ export default function Page(){
   useEffect(()=>{
     try{
       const raw = localStorage.getItem(STORAGE_KEY);
-      const data = raw?JSON.parse(raw):[];
-      const seen = new Set();
-      const deduped = data.filter(p => { if(!p.id || seen.has(p.id)) return false; seen.add(p.id); return true; });
-      const list = deduped.length?deduped:[{...defaults,id:uid()}];
-      setProfiles(list);
-      setActiveId(list[0].id);
-      setProfile(list[0]);
+      if(raw){
+        const data = JSON.parse(raw);
+        setProfile(data);
+      }
     }catch{}
   },[]);
 
   useEffect(()=>{
-    if(!activeId) return;
-    const p = profiles.find(x=>x.id===activeId);
-    if(p) setProfile(p);
-  },[activeId, profiles]);
-
-  useEffect(()=>{
-    if(!activeId) return;
-    setProfiles(prev=>{
-      const idx = prev.findIndex(p=>p.id===activeId);
-      if(idx<0) return prev;
-      if(JSON.stringify(prev[idx])===JSON.stringify(profile)) return prev;
-      const copy=[...prev];
-      copy[idx]={...profile};
-      return copy;
-    });
-  },[profile,activeId]);
-
-  useEffect(()=>{
-    if(!profiles.length) return;
-    localStorage.setItem(STORAGE_KEY, JSON.stringify(profiles));
-  },[profiles]);
-
-  const saveProfile = ()=>{
-    setProfiles(prev=>{
-      const idx = prev.findIndex(p=>p.id===activeId);
-      if(idx>=0){
-        const copy=[...prev];
-        copy[idx]={...profile};
-        return copy;
-      }
-      return [...prev, {...profile, id:uid()}];
-    });
-  };
-
-  const newProfile = ()=>{
-    let id = uid();
-    setProfiles(prev=>{
-      while(prev.some(p=>p.id===id)) id = uid();
-      const name = 'Profile '+id.slice(0,8);
-      const p = {...defaults, id, name};
-      setActiveId(id);
-      setProfile(p);
-      return [p,...prev];
-    });
-  };
-
-  const deleteProfile = (id)=>{
-    setProfiles(prev=>{
-      const filtered = prev.filter(p=>p.id!==id);
-      if(filtered.length===0){
-        const fresh={...defaults,id:uid(), name:'Profile '+uid().slice(0,8)};
-        setActiveId(fresh.id);
-        setProfile(fresh);
-        return [fresh];
-      }
-      if(activeId===id){
-        const next = filtered[0] || null;
-        if(next){
-          setActiveId(next.id);
-          setProfile(next);
-        }
-      }
-      return filtered;
-    });
-  };
+    localStorage.setItem(STORAGE_KEY, JSON.stringify(profile));
+  },[profile]);
 
   const update = (k,v)=> setProfile(p=>({...p,[k]:v}));
   const updateParam = (k,v)=> setProfile(p=>({...p,params:{...p.params,[k]:v}}));
@@ -199,24 +129,14 @@ export default function Page(){
             <aside className="chat-sidebar">
               <div style={{padding:'16px 16px 8px',borderBottom:'1px solid var(--border)',margin:'0 -16px 12px'}}>
                 <h1 style={{margin:0,fontSize:'18px',fontWeight:800}}>NVIDIA Key Lab</h1>
-                <p style={{color:'var(--muted)',fontSize:'12px',margin:'4px 0 0'}}>Local-only profiles</p>
+                <p style={{color:'var(--muted)',fontSize:'12px',margin:'4px 0 0'}}>Local-only config</p>
               </div>
-              <div className="profile-list-sidebar">
-                {profiles.map((p,i)=>(
-                  <button key={`${p.id}-${i}`} className={`profile-item ${p.id===activeId?'active':''}`} onClick={()=>setActiveId(p.id)}>{p.name}</button>
-                ))}
-                <button className="profile-item new" onClick={newProfile}>+ New Profile</button>
-              </div>
-              <div style={{marginTop:'24px',padding:'12px',border:'1px solid var(--border)',borderRadius:'12px',background:'#fff'}}>
+              <div style={{padding:'12px',border:'1px solid var(--border)',borderRadius:'12px',background:'#fff'}}>
                 <h4 style={{margin:'0 0 8px',fontSize:'13px',fontWeight:700}}>API Info</h4>
                 <div className="field small"><label>Profile Name</label><input autoComplete="off" value={profile.name} onChange={e=>update('name',e.target.value)} /></div>
                 <div className="field small"><label>Base URL</label><input autoComplete="off" value={profile.baseUrl} onChange={e=>update('baseUrl',e.target.value)} /></div>
                 <div className="field small"><label>API Key</label><input autoComplete="new-password" type="password" value={profile.apiKey} onChange={e=>update('apiKey',e.target.value)} placeholder="nvapi-..." /></div>
                 <div className="field small"><label>Model</label><input autoComplete="off" value={profile.model} onChange={e=>update('model',e.target.value)} /></div>
-                <div style={{display:'flex',gap:'8px',marginTop:'12px'}}>
-                  <button className="btn primary small" onClick={saveProfile}>Save</button>
-                  <button className="btn small" onClick={()=>setModal({type:'confirm', message:'Delete current profile "'+profile.name+'" ?', onConfirm:()=>{deleteProfile(activeId); setModal(null);}})}>Delete</button>
-                </div>
               </div>
             </aside>
             <main className="chat-main">
