@@ -1,6 +1,6 @@
 'use client';
 import { useEffect, useMemo, useState } from 'react';
-import ScatterBg from './components/ScatterBg';
+import Ferrofluid from './components/Ferrofluid';
 
 const STORAGE_KEY = 'nvidia_profiles_next';
 const defaults = {
@@ -164,7 +164,9 @@ export default function Page(){
 
   return (
     <div>
-      <ScatterBg count={14} />
+      <div style={{position:'fixed', inset:0, zIndex:-1, pointerEvents:'none'}}>
+        <Ferrofluid colors={['#ffffff','#e0e7ff','#ffffff']} speed={0.5} scale={1.6} opacity={0.8} flowDirection="down" />
+      </div>
       <div id="custom-cursor" className="custom-cursor"></div>
       <div className="wrap">
         <div className="card">
