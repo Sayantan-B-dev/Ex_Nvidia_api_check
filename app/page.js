@@ -77,12 +77,12 @@ export default function Page(){
   };
 
   const newProfile = ()=>{
+    let id = uid();
     setProfiles(prev=>{
-      let id = uid();
       while(prev.some(p=>p.id===id)) id = uid();
       const name = 'Profile '+id.slice(0,8);
-      const p={...defaults, id, name};
-      setActiveId(p.id);
+      const p = {...defaults, id, name};
+      setActiveId(id);
       setProfile(p);
       return [p,...prev];
     });
