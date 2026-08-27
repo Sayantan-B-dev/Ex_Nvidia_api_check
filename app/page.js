@@ -245,9 +245,10 @@ export default function Page(){
                 <button className="btn primary" onClick={sendMessage} disabled={isSending}>{isSending?'Sending...':'Send'}</button>
               </div>
             </div>
-          </div>
+          </main>
         </div>
       </div>
+    </div>
       {modal && (
         <div style={{position:'fixed',inset:0,background:'rgba(15,23,42,0.5)',display:'grid',placeItems:'center',zIndex:9999}}>
           <div style={{background:'#fff',border:'1px solid var(--border)',borderRadius:'12px',padding:'20px',width:'min(90vw,420px)',color:'var(--fg)',boxShadow:'0 10px 30px rgba(15,23,42,0.2)'}}>
