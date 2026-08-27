@@ -214,16 +214,7 @@ export default function Page(){
                 <div key={i} style={{marginBottom:'8px',textAlign:m.role==='user'?'right':'left'}}>
                   <div style={{display:'inline-block',maxWidth:'80%',padding:'8px 12px',borderRadius:'12px',background:m.role==='user'?'rgba(60,100,180,0.35)':'rgba(80,140,90,0.35)',border:'1px solid var(--border)',fontSize:'clamp(11px,0.8vw+3px,13px)',textAlign:'left',wordBreak:'break-word'}}>
                     {m.role==='assistant' ? (
-                      <ReactMarkdown remarkPlugins={[remarkGfm]} rehypePlugins={[rehypeSanitize]} components={{
-                        h1:{props:{style:{fontSize:'1.1em',fontWeight:800,margin:'8px 0 4px'}}},
-                        h2:{props:{style:{fontSize:'1.05em',fontWeight:800,margin:'8px 0 4px'}}},
-                        h3:{props:{style:{fontSize:'1em',fontWeight:800,margin:'6px 0 4px'}}},
-                        p:{props:{style:{margin:'4px 0'}}},
-                        ul:{props:{style:{margin:'4px 0',paddingLeft:'18px'}}},
-                        ol:{props:{style:{margin:'4px 0',paddingLeft:'18px'}}},
-                        code:{props:{style:{background:'rgba(255,255,255,0.08)',padding:'2px 4px',borderRadius:'4px',fontFamily:'ui-monospace,monospace'}}},
-                        pre:{props:{style:{background:'rgba(255,255,255,0.06)',padding:'8px',borderRadius:'6px',overflowX:'auto'}}},
-                      }}>
+                      <ReactMarkdown className="chat-markdown" remarkPlugins={[remarkGfm]} rehypePlugins={[rehypeSanitize]}>
                         {m.content}
                       </ReactMarkdown>
                     ) : (
