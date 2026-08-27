@@ -26,7 +26,19 @@ export default function Page(){
 
   useEffect(()=>{
     try{
-      const raw = localStorage.getItem(STORAGE_KEY);
+      let raw = localStorage.getItem(STORAGE_KEY);
+      if(!raw){
+        // migrate from old multi-profile key
+        const oldRaw = localStorage.getItem('nvidia_profiles_next');
+        if(oldRaw){
+          const oldData = JSON.parse(oldRaw);
+          if(Array.isArray(oldData) && oldData.length>0){
+            const first = oldData[0];
+            localStorage.setItem(STORAGE_KEY, JSON.stringify(first));
+            raw = JSON.stringify(first);
+          }
+        }
+      }
       if(raw){
         const data = JSON.parse(raw);
         setProfile(data);
