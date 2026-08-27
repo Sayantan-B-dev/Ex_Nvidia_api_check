@@ -53,6 +53,12 @@ export default function Page(){
     localStorage.setItem(STORAGE_KEY, JSON.stringify(profile));
   },[profile, loaded]);
 
+  useEffect(()=>{
+    const saveNow = ()=> localStorage.setItem(STORAGE_KEY, JSON.stringify(profile));
+    window.addEventListener('beforeunload', saveNow);
+    return ()=> window.removeEventListener('beforeunload', saveNow);
+  },[profile]);
+
   const update = (k,v)=> setProfile(p=>({...p,[k]:v}));
   const updateParam = (k,v)=> setProfile(p=>({...p,params:{...p.params,[k]:v}}));
 
