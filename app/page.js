@@ -199,8 +199,8 @@ export default function Page(){
                 <p style={{color:'var(--muted)',fontSize:'12px',margin:'4px 0 0'}}>Local-only profiles</p>
               </div>
               <div className="profile-list-sidebar">
-                {profiles.map(p=>(
-                  <button key={p.id} className={`profile-item ${p.id===activeId?'active':''}`} onClick={()=>setActiveId(p.id)}>{p.name}</button>
+                {profiles.map((p,i)=>(
+                  <button key={`${p.id}-${i}`} className={`profile-item ${p.id===activeId?'active':''}`} onClick={()=>setActiveId(p.id)}>{p.name}</button>
                 ))}
                 <button className="profile-item new" onClick={newProfile}>+ New Profile</button>
               </div>
@@ -223,7 +223,7 @@ export default function Page(){
               </div>
               <div className="chat-messages">
               {profile.messages.map((m,i)=>(
-                <div key={i} style={{marginBottom:'18px',display:'flex',justifyContent:m.role==='user'?'flex-end':'flex-start'}}>
+                <div key={`${i}-${m.role}-${m.content.slice(0,24)}`} style={{marginBottom:'18px',display:'flex',justifyContent:m.role==='user'?'flex-end':'flex-start'}}>
                   <div style={{maxWidth:'720px',padding:'14px 16px',borderRadius:'12px',background:m.role==='user'?'#e8f0fe':'#ffffff',border:'1px solid var(--border)',fontSize:'14px',textAlign:'left',wordBreak:'break-word',boxShadow:'0 1px 0 rgba(0,0,0,.02)'}}>
                     {m.role==='assistant' ? (
                       <div className="chat-markdown">
