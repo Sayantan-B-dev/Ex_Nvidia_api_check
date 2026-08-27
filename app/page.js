@@ -226,9 +226,11 @@ export default function Page(){
                 <div key={i} style={{marginBottom:'8px',textAlign:m.role==='user'?'right':'left'}}>
                   <div style={{display:'inline-block',maxWidth:'80%',padding:'8px 12px',borderRadius:'12px',background:m.role==='user'?'rgba(60,100,180,0.35)':'rgba(80,140,90,0.35)',border:'1px solid var(--border)',fontSize:'clamp(11px,0.8vw+3px,13px)',textAlign:'left',wordBreak:'break-word'}}>
                     {m.role==='assistant' ? (
-                      <ReactMarkdown className="chat-markdown" remarkPlugins={[remarkGfm]} rehypePlugins={[rehypeSanitize]}>
-                        {m.content}
-                      </ReactMarkdown>
+                      <div className="chat-markdown">
+                        <ReactMarkdown remarkPlugins={[remarkGfm]} rehypePlugins={[rehypeSanitize]}>
+                          {m.content}
+                        </ReactMarkdown>
+                      </div>
                     ) : (
                       m.content
                     )}
