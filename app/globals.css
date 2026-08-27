@@ -181,18 +181,33 @@ pre{
   display:flex;
   gap:6px;
   flex-wrap:wrap;
-  margin-bottom:8px;
+  margin-bottom:12px;
+  padding:8px;
+  border:2px solid var(--border);
+  border-radius:8px;
+  background:rgba(18,18,24,0.6);
 }
 .pill{
   border:2px solid var(--border);
-  padding:4px 8px;
+  padding:6px 10px;
   background:rgba(30,30,38,0.55);
   color:var(--fg);
   font-weight:700;
   cursor:pointer;
   font-size: clamp(9px, 0.7vw + 4px, 10px);
+  border-radius:6px;
+  transition:transform .05s, background .2s;
 }
-.pill.active{background:var(--accent)}
+.pill:hover{transform:translateY(-1px)}
+.pill.active{background:var(--accent); border-color:var(--accent)}
+
+/* Sidebar panel styling */
+.sidebar-panel{
+  border:2px solid var(--border);
+  border-radius:8px;
+  padding:12px;
+  background:rgba(30,30,38,0.4);
+}
 .dots{display:inline-flex;gap:4px;align-items:center}
 .dots span{display:inline-block;width:6px;height:6px;background:var(--fg);border-radius:50%;animation:blink 1.2s infinite}
 .dots span:nth-child(2){animation-delay:.2s}
@@ -201,6 +216,7 @@ pre{
 
 /* Markdown chat styles */
 .chat-markdown h1,.chat-markdown h2,.chat-markdown h3,.chat-markdown h4{margin:.4em 0 .2em;line-height:1.2}
+.chat-markdown *{user-select:text}
 .chat-markdown h1{font-size:1.25em;font-weight:800}
 .chat-markdown h2{font-size:1.15em;font-weight:800}
 .chat-markdown h3{font-size:1.05em;font-weight:800}

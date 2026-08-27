@@ -26,6 +26,7 @@ export default function Page(){
   const [chatInput, setChatInput] = useState('');
   const [isSending, setIsSending] = useState(false);
   const [modal, setModal] = useState(null);
+  const [chatExpanded, setChatExpanded] = useState(false);
 
   useEffect(()=>{
     try{
@@ -200,7 +201,7 @@ export default function Page(){
             <button className="pill" onClick={newProfile}>+ New</button>
           </div>
           <div style={{display:'grid',gridTemplateColumns:'1fr 1fr',gap:'16px',marginBottom:'16px'}}>
-            <div style={{border:'2px solid var(--border)',borderRadius:'8px',padding:'12px',background:'rgba(30,30,38,0.4)'}}>
+            <div className="sidebar-panel">
               <h3 style={{margin:'0 0 12px',fontWeight:800}}>API Info</h3>
               <div className="field"><label>Profile Name</label><input autoComplete="off" value={profile.name} onChange={e=>update('name',e.target.value)} /></div>
               <div className="field"><label>Base URL</label><input autoComplete="off" value={profile.baseUrl} onChange={e=>update('baseUrl',e.target.value)} /></div>
@@ -211,7 +212,7 @@ export default function Page(){
                 <button className="btn" onClick={()=>setModal({type:'confirm', message:'Delete current profile "'+profile.name+'" ?', onConfirm:()=>{deleteProfile(activeId); setModal(null);}})}>Delete Profile</button>
               </div>
             </div>
-            <div style={{border:'2px solid var(--border)',borderRadius:'8px',padding:'12px',background:'rgba(30,30,38,0.4)'}}>
+            <div className="sidebar-panel">
               <h3 style={{margin:'0 0 12px',fontWeight:800}}>Parameters</h3>
               <div className="field"><label>temperature</label><input autoComplete="off" type="number" step="0.01" value={profile.params.temperature} onChange={e=>updateParam('temperature',parseFloat(e.target.value))}/></div>
               <div className="field"><label>top_p</label><input autoComplete="off" type="number" step="0.01" value={profile.params.top_p} onChange={e=>updateParam('top_p',parseFloat(e.target.value))}/></div>
@@ -220,8 +221,11 @@ export default function Page(){
             </div>
           </div>
           <div style={{border:'2px solid var(--border)',borderRadius:'8px',padding:'12px',background:'rgba(30,30,38,0.4)'}}>
-            <h3 style={{margin:'0 0 12px',fontWeight:800}}>Chat</h3>
-            <div style={{border:'2px solid var(--border)',borderRadius:'12px',padding:'10px',background:'rgba(20,20,28,0.5)',maxHeight:'320px',overflow:'auto',marginBottom:'10px'}}>
+            <div style={{display:'flex',alignItems:'center',justifyContent:'space-between',margin:'0 0 12px'}}>
+              <h3 style={{margin:0,fontWeight:800}}>Chat</h3>
+              <button className="btn small" onClick={()=>setChatExpanded(v=>!v)}>{chatExpanded?'Collapse':'Expand'}</button>
+            </div>
+            <div style={{border:'2px solid var(--border)',borderRadius:'12px',padding:'10px',background:'rgba(20,20,28,0.5)',maxHeight: chatExpanded?'600px':'320px',height: chatExpanded?'600px':'auto',overflow:'auto',marginBottom:'10px'}}>
               {profile.messages.map((m,i)=>(
                 <div key={i} style={{marginBottom:'8px',textAlign:m.role==='user'?'right':'left'}}>
                   <div style={{display:'inline-block',maxWidth:'80%',padding:'8px 12px',borderRadius:'12px',background:m.role==='user'?'rgba(60,100,180,0.35)':'rgba(80,140,90,0.35)',border:'1px solid var(--border)',fontSize:'clamp(11px,0.8vw+3px,13px)',textAlign:'left',wordBreak:'break-word'}}>
