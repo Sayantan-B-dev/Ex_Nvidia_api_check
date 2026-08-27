@@ -77,10 +77,11 @@ export default function Page(){
   };
 
   const newProfile = ()=>{
-    let id = uid();
     setProfiles(prev=>{
+      let id = uid();
       while(prev.some(p=>p.id===id)) id = uid();
-      const p={...defaults, id, name:'New '+new Date().toLocaleTimeString()};
+      const name = 'Profile '+id.slice(0,8);
+      const p={...defaults, id, name};
       setActiveId(p.id);
       setProfile(p);
       return [p,...prev];
