@@ -186,46 +186,36 @@ export default function Page(){
       <div id="custom-cursor" className="custom-cursor"></div>
       <div className="wrap">
         <div className="card">
-          <div style={{display:'flex',alignItems:'center',gap:'12px',flexWrap:'wrap',marginBottom:'8px'}}>
-            <h1 style={{margin:0}}>NVIDIA Key Lab</h1>
-            <a href="https://github.com/Sayantan-B-dev/Ex_Nvidia_api_check" target="_blank" rel="noopener noreferrer" style={{display:'inline-flex',alignItems:'center',gap:'6px',border:'2px solid var(--border)',padding:'4px 8px',borderRadius:'6px',textDecoration:'none',color:'var(--fg)',fontSize:'clamp(9px,0.7vw+4px,10px)',fontWeight:700}}>
-              <svg width="16" height="16" viewBox="0 0 24 24" fill="currentColor"><path d="M12 .5a12 12 0 0 0-3.79 23.4c.6.11.82-.26.82-.58v-2.02c-3.34.73-4.04-1.61-4.04-1.61-.55-1.39-1.34-1.76-1.34-1.76-1.09-.75.08-.73.08-.73 1.21.08 1.85 1.24 1.85 1.24 1.07 1.83 2.81 1.3 3.5.99.11-.78.42-1.3.76-1.6-2.67-.3-5.47-1.33-5.47-5.93 0-1.31.47-2.38 1.24-3.22-.12-.3-.54-1.52.12-3.18 0 0 1.01-.32 3.3 1.23a11.5 11.5 0 0 1 6 0c2.28-1.55 3.29-1.23 3.29-1.23.66 1.66.24 2.88.12 3.18.77.84 1.23 1.91 1.23 3.22 0 4.61-2.8 5.63-5.48 5.93.43.37.81 1.1.81 2.22v3.29c0 .32.22.7.83.58A12 12 0 0 0 12 .5z"/></svg>
-              View code
-            </a>
-          </div>
-          <p style={{color:'var(--muted)',fontSize:'clamp(10px,0.8vw+5px,11px)',margin:'0 0 12px'}}>No backend. No database. All API keys and profiles are stored locally in your browser localStorage only. Requests go directly from your browser to Nvidia. Nothing is recorded on any server. You can verify this yourself on GitHub.</p>
-          <div className="profile-list">
-            {profiles.map(p=>(
-              <button key={p.id} className={`pill ${p.id===activeId?'active':''}`} onClick={()=>setActiveId(p.id)}>{p.name}</button>
-            ))}
-            <button className="pill" onClick={newProfile}>+ New</button>
-          </div>
-          <div style={{display:'grid',gridTemplateColumns:'1fr 1fr',gap:'16px',marginBottom:'16px'}}>
-            <div className="sidebar-panel">
-              <h3 style={{margin:'0 0 12px',fontWeight:800}}>API Info</h3>
-              <div className="field"><label>Profile Name</label><input autoComplete="off" value={profile.name} onChange={e=>update('name',e.target.value)} /></div>
-              <div className="field"><label>Base URL</label><input autoComplete="off" value={profile.baseUrl} onChange={e=>update('baseUrl',e.target.value)} /></div>
-              <div className="field"><label>API Key</label><input autoComplete="new-password" type="password" value={profile.apiKey} onChange={e=>update('apiKey',e.target.value)} placeholder="nvapi-..." /></div>
-              <div className="field"><label>Model</label><input autoComplete="off" value={profile.model} onChange={e=>update('model',e.target.value)} /></div>
-              <div style={{marginTop:'12px',display:'flex',gap:'8px'}}>
-                <button className="btn primary" onClick={saveProfile}>Save Profile</button>
-                <button className="btn" onClick={()=>setModal({type:'confirm', message:'Delete current profile "'+profile.name+'" ?', onConfirm:()=>{deleteProfile(activeId); setModal(null);}})}>Delete Profile</button>
+          <div className="chat-layout">
+            <aside className="chat-sidebar">
+              <div style={{padding:'16px 16px 8px',borderBottom:'1px solid var(--border)',margin:'0 -16px 12px'}}>
+                <h1 style={{margin:0,fontSize:'18px',fontWeight:800}}>NVIDIA Key Lab</h1>
+                <p style={{color:'var(--muted)',fontSize:'12px',margin:'4px 0 0'}}>Local-only profiles</p>
               </div>
-            </div>
-            <div className="sidebar-panel">
-              <h3 style={{margin:'0 0 12px',fontWeight:800}}>Parameters</h3>
-              <div className="field"><label>temperature</label><input autoComplete="off" type="number" step="0.01" value={profile.params.temperature} onChange={e=>updateParam('temperature',parseFloat(e.target.value))}/></div>
-              <div className="field"><label>top_p</label><input autoComplete="off" type="number" step="0.01" value={profile.params.top_p} onChange={e=>updateParam('top_p',parseFloat(e.target.value))}/></div>
-              <div className="field"><label>max_tokens</label><input autoComplete="off" type="number" value={profile.params.max_tokens} onChange={e=>updateParam('max_tokens',parseInt(e.target.value))}/></div>
-              <label style={{display:'flex',alignItems:'center',gap:8,marginTop:12}}><input type="checkbox" checked={profile.params.stream} onChange={e=>updateParam('stream',e.target.checked)} /> stream</label>
-            </div>
-          </div>
-          <div style={{border:'2px solid var(--border)',borderRadius:'8px',padding:'12px',background:'rgba(30,30,38,0.4)'}}>
-            <div style={{display:'flex',alignItems:'center',justifyContent:'space-between',margin:'0 0 12px'}}>
-              <h3 style={{margin:0,fontWeight:800}}>Chat</h3>
-              <button className="btn small" onClick={()=>setChatExpanded(v=>!v)}>{chatExpanded?'Collapse':'Expand'}</button>
-            </div>
-            <div style={{border:'1px solid var(--border)',borderRadius:'12px',padding:'12px',background:'#fff',maxHeight: chatExpanded?'600px':'320px',height: chatExpanded?'600px':'auto',overflow:'auto',marginBottom:'12px'}}>
+              <div className="profile-list-sidebar">
+                {profiles.map(p=>(
+                  <button key={p.id} className={`profile-item ${p.id===activeId?'active':''}`} onClick={()=>setActiveId(p.id)}>{p.name}</button>
+                ))}
+                <button className="profile-item new" onClick={newProfile}>+ New Profile</button>
+              </div>
+              <div style={{marginTop:'24px',padding:'12px',border:'1px solid var(--border)',borderRadius:'12px',background:'#fff'}}>
+                <h4 style={{margin:'0 0 8px',fontSize:'13px',fontWeight:700}}>API Info</h4>
+                <div className="field small"><label>Profile Name</label><input autoComplete="off" value={profile.name} onChange={e=>update('name',e.target.value)} /></div>
+                <div className="field small"><label>Base URL</label><input autoComplete="off" value={profile.baseUrl} onChange={e=>update('baseUrl',e.target.value)} /></div>
+                <div className="field small"><label>API Key</label><input autoComplete="new-password" type="password" value={profile.apiKey} onChange={e=>update('apiKey',e.target.value)} placeholder="nvapi-..." /></div>
+                <div className="field small"><label>Model</label><input autoComplete="off" value={profile.model} onChange={e=>update('model',e.target.value)} /></div>
+                <div style={{display:'flex',gap:'8px',marginTop:'12px'}}>
+                  <button className="btn primary small" onClick={saveProfile}>Save</button>
+                  <button className="btn small" onClick={()=>setModal({type:'confirm', message:'Delete current profile "'+profile.name+'" ?', onConfirm:()=>{deleteProfile(activeId); setModal(null);}})}>Delete</button>
+                </div>
+              </div>
+            </aside>
+            <main className="chat-main">
+              <div className="chat-header">
+                <div style={{fontWeight:700}}>{profile.name}</div>
+                <div style={{color:'var(--muted)',fontSize:'12px'}}>Model: {profile.model || '—'}</div>
+              </div>
+              <div className="chat-messages">
               {profile.messages.map((m,i)=>(
                 <div key={i} style={{marginBottom:'8px',textAlign:m.role==='user'?'right':'left'}}>
                   <div style={{display:'inline-block',maxWidth:'80%',padding:'12px 16px',borderRadius:'12px',background:m.role==='user'?'#e0f2fe':'#f8fafc',border:'1px solid var(--border)',fontSize:'14px',textAlign:'left',wordBreak:'break-word'}}>
