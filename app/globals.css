@@ -50,7 +50,7 @@ body{
   border:2px solid var(--border);
   background-size:cover;
   background-position:center;
-  opacity:.9;
+  opacity:.35;
   z-index:0;
   animation: floatRot 30s linear infinite;
 }

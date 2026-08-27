@@ -1,9 +1,10 @@
 'use client';
-import { useEffect, useMemo } from 'react';
+import { useEffect, useState } from 'react';
 
 export default function ScatterBg({ count = 16 }) {
-  const images = useMemo(()=>{
-    return Array.from({length: count}).map((_,i)=>({
+  const [images, setImages] = useState([]);
+  useEffect(()=>{
+    setImages(Array.from({length: count}).map((_,i)=>({
       id:i,
       seed: 3000+i,
       top: Math.floor(Math.random()*85),
@@ -11,7 +12,7 @@ export default function ScatterBg({ count = 16 }) {
       w: 100+Math.floor(Math.random()*200),
       h: 100+Math.floor(Math.random()*200),
       rot: Math.floor(Math.random()*70)-35
-    }));
+    })));
   },[count]);
 
   useEffect(()=>{
