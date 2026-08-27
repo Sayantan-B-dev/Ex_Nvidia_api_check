@@ -92,15 +92,17 @@ export default function Page(){
     setProfiles(prev=>{
       const filtered = prev.filter(p=>p.id!==id);
       if(filtered.length===0){
-        const fresh={...defaults,id:uid()};
+        const fresh={...defaults,id:uid(), name:'Profile '+uid().slice(0,8)};
         setActiveId(fresh.id);
         setProfile(fresh);
         return [fresh];
       }
       if(activeId===id){
-        const next = filtered[0];
-        setActiveId(next.id);
-        setProfile(next);
+        const next = filtered[0] || null;
+        if(next){
+          setActiveId(next.id);
+          setProfile(next);
+        }
       }
       return filtered;
     });
