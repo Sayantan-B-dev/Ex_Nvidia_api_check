@@ -45,6 +45,18 @@ export default function Page(){
   },[activeId, profiles]);
 
   useEffect(()=>{
+    if(!activeId) return;
+    setProfiles(prev=>{
+      const idx = prev.findIndex(p=>p.id===activeId);
+      if(idx<0) return prev;
+      if(JSON.stringify(prev[idx])===JSON.stringify(profile)) return prev;
+      const copy=[...prev];
+      copy[idx]={...profile};
+      return copy;
+    });
+  },[profile,activeId]);
+
+  useEffect(()=>{
     if(!profiles.length) return;
     localStorage.setItem(STORAGE_KEY, JSON.stringify(profiles));
   },[profiles]);
