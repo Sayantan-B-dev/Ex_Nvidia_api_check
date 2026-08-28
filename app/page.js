@@ -18,6 +18,7 @@ const defaults = {
 export default function Page(){
   const [profile, setProfile] = useState(defaults);
   const [loaded, setLoaded] = useState(false);
+  const [sidebarOpen, setSidebarOpen] = useState(true);
   const [response, setResponse] = useState('— No request sent yet —');
   const [meta, setMeta] = useState('');
   const [chatInput, setChatInput] = useState('');
@@ -147,7 +148,7 @@ export default function Page(){
       <div className="wrap">
         <div className="card">
           <div className="chat-layout">
-            <aside className="chat-sidebar">
+            <aside className={`chat-sidebar ${sidebarOpen ? '' : 'collapsed'}`}>
               <div style={{padding:'16px 16px 8px',borderBottom:'1px solid var(--border)',margin:'0 -16px 12px'}}>
                 <h1 style={{margin:0,fontSize:'18px',fontWeight:800}}>NVIDIA Key Lab</h1>
                 <p style={{color:'var(--muted)',fontSize:'12px',margin:'4px 0 0'}}>Local-only config</p>
@@ -177,7 +178,10 @@ export default function Page(){
             </aside>
             <main className="chat-main">
               <div className="chat-header">
-                <div style={{fontWeight:700}}>{profile.name}</div>
+                <div style={{display:'flex',alignItems:'center',gap:'8px'}}>
+                  <button className="btn small" onClick={()=>setSidebarOpen(v=>!v)} aria-label="Toggle sidebar" style={{padding:'6px 8px'}}>☰</button>
+                  <div style={{fontWeight:700}}>{profile.name}</div>
+                </div>
                 <div style={{color:'var(--muted)',fontSize:'12px'}}>Model: {profile.model || '—'}</div>
               </div>
               <div className="chat-messages">
